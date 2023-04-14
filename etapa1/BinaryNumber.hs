@@ -27,6 +27,18 @@ type BinaryNumber = [Int]
     > toDecimal [0,1,1]
     6
 -}
+
+{-
+    acc - acumulator intermediar
+    x - bitul curent
+    i - poztia bitului curent
+    zip - grupa bitii cu pozitiile lor
+    reverse - inverseaza ordinea bitilor
+    <*> - aplica functia zip cu parametrul reverse
+    . - compune functiile
+    foldl - aplica functia de mai sus pe toate bitii
+-}
+
 toDecimal :: BinaryNumber -> Int
 toDecimal = undefined
 
@@ -50,8 +62,15 @@ toDecimal = undefined
     > take 10 $ toBinary 6
     [0,1,1,0,0,0,0,0,0,0]
 -}
+
+{-
+    swap - interschimba elementele unei perechi
+    $ - aplica functia
+    divMod - impartire si rest
+-}
+
 toBinary :: Int -> BinaryNumber
-toBinary = undefined
+toBinary = unfoldr (\x -> if x == 0 then Nothing else Just (swap $ divMod x 2))
 
 {-
     *** TODO ***
@@ -71,8 +90,13 @@ toBinary = undefined
     > inc [1,1,1]
     [0,0,0,1]
 -}
+
 inc :: BinaryNumber -> BinaryNumber
-inc bits = undefined
+inc bits = 
+    case bits of
+        [] -> [1]
+        0:xs -> 1:xs
+        1:xs -> 0:inc xs
 
 {-
    *** TODO ***
@@ -92,6 +116,7 @@ inc bits = undefined
     > dec [0,0,0,1]
     [1,1,1]
 -}
+
 dec :: BinaryNumber -> BinaryNumber
 dec bits = undefined
 
@@ -120,7 +145,6 @@ dec bits = undefined
 -}
 add :: BinaryNumber -> BinaryNumber -> BinaryNumber
 add bits1 bits2 = undefined
-
 {-
     *** TODO ***
 
@@ -187,3 +211,4 @@ multiply bits1 bits2 = undefined
     pt a păstra doar biții 1 din bits2. Ce probleme ar putea crea această
     abordare?
 -}
+
