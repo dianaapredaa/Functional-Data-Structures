@@ -29,18 +29,14 @@ type BinaryNumber = [Int]
 -}
 
 {-
-    acc - acumulator intermediar
+    acc - acumulator
     x - bitul curent
-    i - poztia bitului curent
-    zip - grupa bitii cu pozitiile lor
-    reverse - inverseaza ordinea bitilor
-    <*> - aplica functia zip cu parametrul reverse
-    . - compune functiile
-    foldl - aplica functia de mai sus pe toate bitii
+    foldr - aplica functia de mai sus pe toate bitii
 -}
 
 toDecimal :: BinaryNumber -> Int
-toDecimal = undefined
+toDecimal = foldr (\x acc -> acc * 2 + x) 0 
+
 
 {-
     *** TODO ***
@@ -67,10 +63,11 @@ toDecimal = undefined
     swap - interschimba elementele unei perechi
     $ - aplica functia
     divMod - impartire si rest
+    unfoldr - aplica functia de mai sus pe toate bitii
 -}
 
 toBinary :: Int -> BinaryNumber
-toBinary = unfoldr (\x -> if x == 0 then Nothing else Just (swap $ divMod x 2))
+am toBinary = unfoldr (\x -> Just (swap $ divMod x 2))
 
 {-
     *** TODO ***
@@ -118,8 +115,11 @@ inc bits =
 -}
 
 dec :: BinaryNumber -> BinaryNumber
-dec bits = undefined
-
+dec bits = 
+    case bits of
+        [] -> []
+        0:xs -> 1:dec xs
+        1:xs -> 0:xs
 {-
     *** TODO ***
 
@@ -145,6 +145,8 @@ dec bits = undefined
 -}
 add :: BinaryNumber -> BinaryNumber -> BinaryNumber
 add bits1 bits2 = undefined
+
+
 {-
     *** TODO ***
 
@@ -153,7 +155,7 @@ add bits1 bits2 = undefined
     cu bit-ul curent din bits2. Deplasarea se face adăugând la stânga lui bits1
     un număr de 0-uri dat de numărul liniei curente. Întoarce o listă infinită
     de liste infinite.
-
+                 
     Vizual:
 
     0 1 1 0 ... *   <- bits1
@@ -177,6 +179,7 @@ add bits1 bits2 = undefined
 -}
 stack :: BinaryNumber -> BinaryNumber -> [BinaryNumber]
 stack bits1 bits2 = undefined
+
 
 {-
     *** TODO ***
