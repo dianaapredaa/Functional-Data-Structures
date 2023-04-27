@@ -67,7 +67,7 @@ toDecimal = foldr (\x acc -> acc * 2 + x) 0
 -}
 
 toBinary :: Int -> BinaryNumber
-am toBinary = unfoldr (\x -> Just (swap $ divMod x 2))
+toBinary = unfoldr (\x -> Just (swap $ divMod x 2))
 
 {-
     *** TODO ***
@@ -120,6 +120,7 @@ dec bits =
         [] -> []
         0:xs -> 1:dec xs
         1:xs -> 0:xs
+
 {-
     *** TODO ***
 
@@ -143,9 +144,14 @@ dec bits =
     > toDecimal $ take 10 $ add (toBinary 74) (toBinary 123)
     197
 -}
-add :: BinaryNumber -> BinaryNumber -> BinaryNumber
-add bits1 bits2 = undefined
 
+{-
+    we use mapAccumL to add the bits from the 2 lists and we use div and mod to
+    get the carry and the bit
+-}
+
+add :: BinaryNumber -> BinaryNumber -> BinaryNumber
+add bits1 bits2 = snd $ mapAccumL (\acc (x, y) -> (div (acc + x + y) 2, mod (acc + x + y) 2)) 0 (zip bits1 bits2)
 
 {-
     *** TODO ***
@@ -176,9 +182,18 @@ add bits1 bits2 = undefined
     (exemplul vizual)
     > take 3 $ map (take 6) $ stack (toBinary 6) (toBinary 5)
     [[0,1,1,0,0,0],[0,0,0,0,0,0],[0,0,0,1,1,0]]
+-} 
+
+{-
+    we use zip to create a list of tuples (i, bit) where i is the index of the current bit from bits2
+    we create lists, where each list is the result of multiplying bits1 with the current bit from bits2
+    replicate is used to add i 0s to the beginning of the list
+    we use map to multiply each element from bits1 with the current bit from bits2
 -}
+
+
 stack :: BinaryNumber -> BinaryNumber -> [BinaryNumber]
-stack bits1 bits2 = undefined
+stack bits1 bits2 = [list | (i, bit) <- zip [0..] bits2, let list = replicate i 0 ++ map (* bit) bits1]
 
 
 {-
@@ -200,7 +215,7 @@ stack bits1 bits2 = undefined
     [0,6,6,30,30]
 -}
 multiply :: BinaryNumber -> BinaryNumber -> [BinaryNumber]
-multiply bits1 bits2 = undefined
+multiply bits1 bits2 = scanl (\acc x -> add acc x) [0 * i | i <- bits1] (stack bits1 bits2)
 
 {-
     *** TODO ***
